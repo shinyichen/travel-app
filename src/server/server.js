@@ -9,7 +9,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static("../client"));
+app.use(express.static("dist"));
 
 /* start server */
 const server = app.listen(PORT, ()=>{
@@ -18,7 +18,7 @@ const server = app.listen(PORT, ()=>{
 
 /* index */
 app.get("/", function(request, response) {
-    response.send("index");
+    response.sendFile("dist/index.html");
 });
 
 /* get coordinate from zip code using Geonames API */
