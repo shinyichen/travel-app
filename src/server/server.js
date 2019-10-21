@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -19,19 +20,4 @@ const server = app.listen(PORT, ()=>{
 /* index */
 app.get("/", function(request, response) {
     response.sendFile("dist/index.html");
-});
-
-/* get coordinate from zip code using Geonames API */
-app.get("/coord", function(request, response) {
-
-});
-
-/* get weather forcase from coord and date using Dark sky API */
-app.get("/weather", function(request, response) {
-
-});
-
-/* get location image from zip using Pixabay API */
-app.get("/locimage", function(request, response) {
-
 });
