@@ -16,11 +16,12 @@
     <body>
         <form action="">
             <input type="text" name="cityInput" id="cityInput" />
-            <input type="datetime" name="dateInput" id="dateInput" />
-            <button onclick="return Client.getCoord(event)" onsubmit="return Client.getCoord(event)">Submit</button>
+            <input type="date" name="dateInput" id="dateInput" />
+            <button id="submitButton">Submit</button>
         </form>
 
         <section id="result">
+            <div>Your trip is <span id="countdown"></span> days away</div>
             <div>City: <span id="city"></span></div>
             <div>Country: <span id="country"></span></div>
             <div>Lat: <span id="lat"></span></div>
