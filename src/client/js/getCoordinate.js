@@ -14,6 +14,29 @@ async function getCoord(city) {
     }
 }
 
+async function getWeather(lat, lon, time) {
+    const url = "http://localhost:8000/darksky";
+    const data = {
+        lat: lat,
+        lon: lon
+    }
+    if (time !== undefined) {
+        data.time = time;
+    }
+    const response = await fetch(url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+    const weather = await response.json();
+    console.log(weather);
+    return weather;
+}
+
 export {
-    getCoord
+    getCoord,
+    getWeather
 }
