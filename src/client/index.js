@@ -1,4 +1,4 @@
-import { getCoord, getWeather } from "./js/getCoordinate";
+import { getCoord, getWeather, getImage } from "./js/getCoordinate";
 import "./styles/styles.scss";
 
 document.getElementById("submitButton").addEventListener("click", function(event) {
@@ -23,7 +23,7 @@ document.getElementById("submitButton").addEventListener("click", function(event
     // count the difference in days
     const daysAway = (travelDate.getTime() - today.getTime())/(1000*60*60*24);
     
-    // get coordinate from city
+    // get coordinate/weather from city
     getCoord(city).then((coordRecord) => {
         if (coordRecord.status === "ok") {
             document.getElementById("countdown").innerHTML = daysAway;
@@ -48,6 +48,12 @@ document.getElementById("submitButton").addEventListener("click", function(event
         document.getElementById("lowTemp").innerHTML = weather.lowTemp;
         document.getElementById("highTemp").innerHTML = weather.highTemp;
     });
+
+    // get city image
+    getImage(city).then((imageUrl) => {
+        document.getElementById("cityImage").setAttribute("src", imageUrl);
+    });
+
 });
 
 // export {

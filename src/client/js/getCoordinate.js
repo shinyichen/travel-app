@@ -36,7 +36,15 @@ async function getWeather(lat, lon, time) {
     return weather;
 }
 
+async function getImage(city) {
+    const url = encodeURI(`http://localhost:8000/cityimage/${city}`);
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.imageUrl;
+}
+
 export {
     getCoord,
-    getWeather
+    getWeather,
+    getImage
 }

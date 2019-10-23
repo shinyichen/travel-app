@@ -15,7 +15,8 @@ app.use(cors());
 app.use(express.static("dist"));
 
 dotenv.config();
-const DARKSKY_ENTPOINT = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}`;
+const DARKSKY_ENDPOINT = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}`;
+const PIXABAY_ENDPOINT = `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}`;
 
 /* start server */
 const server = app.listen(PORT, ()=>{
@@ -34,13 +35,13 @@ app.post("/darksky", function(request, response) {
     const time = request.body.time;
     let url;
     if (time === undefined) {
-        url = `${DARKSKY_ENTPOINT}/${lat},${lon}`;
+        url = `${DARKSKY_ENDPOINT}/${lat},${lon}`;
     }
     else {
-        url = encodeURI(`${DARKSKY_ENTPOINT}/${lat},${lon},${time}`);
+        url = encodeURI(`${DARKSKY_ENDPOINT}/${lat},${lon},${time}`);
     }
     console.log(url);
-    fetch(url).then((res)=>{
+    fetch(url).then((res) => {
         return res.json();
     })
     .then((res) => {
@@ -49,6 +50,19 @@ app.post("/darksky", function(request, response) {
             summary: data.summary,
             highTemp: data.temperatureHigh,
             lowTemp: data.temperatureLow
+        });
+    });
+});
+
+app.get("/cityimage/:city", function(request, response) {
+    const url = encodeURI(`${PIXABAY_ENDPOINT}&q=${request.params.city}`);
+    console.log(url);
+    fetch(url).then((res) => {
+        return res.json();
+    })
+    .then((res) => {
+        response.json({
+            imageUrl: res.hits[0].webformatURL
         });
     });
 });
