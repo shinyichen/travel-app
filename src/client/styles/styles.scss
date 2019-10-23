@@ -20,19 +20,36 @@ header {
         flex-direction: column;
         input {
             height: 20px;
-            // margin-right: 10px;
             border-radius: 5px;
             border: 0px;
             padding: 5px;
+        }
+        input[type="text"] {
             width: 95%;
         }
-        div {
-            margin: 5px auto;
+        label {
+            display: block;
+        }
+        #cityContainer {
+            margin: 0 auto;
             width: 95%;
             border-radius: 5px;
-            background-color: white;
-            border: 0px;
+            // border: 1px solid black;
             padding: 5px 5px;
+        }
+
+        #dateContainer {
+            margin: 0 auto;
+            width: 95%;
+            border-radius: 5px;
+            flex-direction: row;
+            // border: 1px solid black;
+            padding: 5px 5px;
+            display: flex;
+        }
+
+        .datePicker {
+            width: 50%;
         }
     }
 
@@ -52,5 +69,11 @@ header {
 
 #cityImage {
     width: 100%;
-    
+
+}
+
+@media screen and (min-width: 600px) {
+    body {
+        max-width: 800px;
+    }
 }

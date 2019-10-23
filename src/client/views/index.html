@@ -21,23 +21,29 @@
         <section id="inputSection">
             <h3>Enter your travel information</h3>
             <form id="inputForm">
-                <div>
+                <div id="cityContainer">
                     <label for="cityInput">Destination</label>
-                    <input type="text" name="cityInput" id="cityInput"/>
+                    <input type="text" name="cityInput" id="cityInput" required/>
                 </div>
-                <div>
-                    <label for="startDateInput">Start Date</label>
-                    <input type="date" name="startDateInput" id="startDateInput"/>
+                <div id="dateContainer">
+                    <div class="datePicker">
+                        <label for="startDateInput">Start Date</label>
+                        <input type="date" name="startDateInput" id="startDateInput" required/>
+                    </div>
+                    <div class="datePicker">
+                        <label for="endDateInput">End Date</label>
+                        <input type="date" name="endDateInput" id="endDateInput" required/>
+                    </div>
                 </div>
-                <div>
-                    <label for="endDateInput">End Date</label>
-                    <input type="date" name="endDateInput" id="endDateInput" />
-                </div>
+                
                 <button id="submitButton">Submit</button>
             </form>
         </section>
 
         <section id="result" class="hidden">
+            <section>
+                <div><img id="cityImage"></img></div>
+            </section>
             <h3>Your <span id="tripLength"></span>-day trip to <span id="city"></span>, <span id="country"></span> is <span id="countdown"></span> days away</h3>
             <h4 id="weatherTitle"></h4>
             <div id="weatherSummary"></div>
@@ -45,8 +51,5 @@
             <div>High Temperature: <span id="highTemp"></span></div>
         </section>
 
-        <section>
-            <div><img id="cityImage"></img></div>
-        </section>
     </body>
 </html>
