@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
         <title>Travel App</title>
         <script>
             // Check that service workers are supported
@@ -13,24 +14,39 @@
             }
         </script>
     </head>
+    <header>
+        <h1>Travel App</h1>
+    </header>
     <body>
-        <form action="">
-            <input type="text" name="cityInput" id="cityInput" />
-            <input type="date" name="dateInput" id="dateInput" />
-            <button id="submitButton">Submit</button>
-        </form>
+        <section id="inputSection">
+            <h3>Enter your travel information</h3>
+            <form id="inputForm">
+                <div>
+                    <label for="cityInput">Destination</label>
+                    <input type="text" name="cityInput" id="cityInput"/>
+                </div>
+                <div>
+                    <label for="startDateInput">Start Date</label>
+                    <input type="date" name="startDateInput" id="startDateInput"/>
+                </div>
+                <div>
+                    <label for="endDateInput">End Date</label>
+                    <input type="date" name="endDateInput" id="endDateInput" />
+                </div>
+                <button id="submitButton">Submit</button>
+            </form>
+        </section>
 
-        <section id="result">
-            <div>Your trip is <span id="countdown"></span> days away</div>
-            <div>City: <span id="city"></span></div>
-            <div>Country: <span id="country"></span></div>
-            <div>Lat: <span id="lat"></span></div>
-            <div>Lon: <span id="lon"></span></div>
-            <h3>Weather Forcast: </h3>
-            <div>Summary: <span id="weatherSummary"></span></div>
+        <section id="result" class="hidden">
+            <h3>Your <span id="tripLength"></span>-day trip to <span id="city"></span>, <span id="country"></span> is <span id="countdown"></span> days away</h3>
+            <h4 id="weatherTitle"></h4>
+            <div id="weatherSummary"></div>
             <div>Low Temperature: <span id="lowTemp"></span></div>
             <div>High Temperature: <span id="highTemp"></span></div>
-            <img id="cityImage"></img>
+        </section>
+
+        <section>
+            <div><img id="cityImage"></img></div>
         </section>
     </body>
 </html>

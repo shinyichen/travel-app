@@ -13,24 +13,32 @@ document.getElementById("submitButton").addEventListener("click", function(event
 
     // get user inputs
     const city = document.getElementById("cityInput").value;
-    const date = document.getElementById("dateInput").value;
+    const startDate = document.getElementById("startDateInput").value;
+    const endDate = document.getElementById("endDateInput").value;
 
     // get travel date
-    const dateSplit = date.split("-");
-    let travelDate = new Date(dateSplit[0], dateSplit[1]-1, dateSplit[2], 0, 0, 0, 0);
-    console.log(travelDate.toUTCString());
+    const startDateSplit = startDate.split("-");
+    const endDateSplit = endDate.split("-");
+    let travelStartDate = new Date(startDateSplit[0], startDateSplit[1]-1, startDateSplit[2], 0, 0, 0, 0);
+    let travelEndDate = new Date(endDateSplit[0], endDateSplit[1]-1, endDateSplit[2], 0, 0, 0, 0);
 
     // count the difference in days
-    const daysAway = (travelDate.getTime() - today.getTime())/(1000*60*60*24);
+    const daysAway = (travelStartDate.getTime() - today.getTime())/(1000*60*60*24);
     
+    // trip length
+    const travelLength = (travelEndDate.getTime() - travelStartDate.getTime())/(1000*60*60*24);
+
+    // location
+    let location;
+
     // get coordinate/weather from city
     getCoord(city).then((coordRecord) => {
         if (coordRecord.status === "ok") {
+            document.getElementById("tripLength").innerHTML = travelLength;
             document.getElementById("countdown").innerHTML = daysAway;
             document.getElementById("city").innerHTML = coordRecord.name;
             document.getElementById("country").innerHTML = coordRecord.countryName;
-            document.getElementById("lat").innerHTML = coordRecord.lat;
-            document.getElementById("lon").innerHTML = coordRecord.lng;
+            location = coordRecord.name;
             return [coordRecord.lat, coordRecord.lng];
         } else {
             console.log("get coord failed");
@@ -41,21 +49,25 @@ document.getElementById("submitButton").addEventListener("click", function(event
         if (daysAway < 7) {
             return getWeather(coord[0], coord[1]);
         } else {
-            return getWeather(coord[0], coord[1], travelDate.getTime()/1000);
+            return getWeather(coord[0], coord[1], travelStartDate.getTime()/1000);
         }
     }).then((weather) => {
+        if (daysAway < 7) {
+            document.getElementById("weatherTitle").innerHTML = `Current weather in ${location}`;
+        } else {
+            document.getElementById("weatherTitle").innerHTML = `Weather forcast in ${location}`;
+        }
         document.getElementById("weatherSummary").innerHTML = weather.summary;
         document.getElementById("lowTemp").innerHTML = weather.lowTemp;
         document.getElementById("highTemp").innerHTML = weather.highTemp;
+
+        // get city image
+        return getImage(city);
+    })
+    .then((imageUrl) => {
+        document.getElementById("cityImage").setAttribute("src", imageUrl);
+        document.getElementById("result").classList.remove("hidden");
     });
 
-    // get city image
-    getImage(city).then((imageUrl) => {
-        document.getElementById("cityImage").setAttribute("src", imageUrl);
-    });
 
 });
-
-// export {
-//     getCoord
-// }
