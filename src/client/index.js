@@ -23,10 +23,10 @@ document.getElementById("submitButton").addEventListener("click", function(event
     let travelEndDate = new Date(endDateSplit[0], endDateSplit[1]-1, endDateSplit[2], 0, 0, 0, 0);
 
     // count the difference in days
-    const daysAway = (travelStartDate.getTime() - today.getTime())/(1000*60*60*24);
+    const daysAway = Math.floor((travelStartDate - today)/(1000*60*60*24));
     
     // trip length
-    const travelLength = (travelEndDate.getTime() - travelStartDate.getTime())/(1000*60*60*24);
+    const travelLength = Math.floor((travelEndDate - travelStartDate)/(1000*60*60*24));
 
     // location
     let location;

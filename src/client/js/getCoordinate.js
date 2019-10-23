@@ -32,7 +32,6 @@ async function getWeather(lat, lon, time) {
         body: JSON.stringify(data)
     });
     const weather = await response.json();
-    console.log(weather);
     return weather;
 }
 

@@ -40,7 +40,7 @@ app.post("/darksky", function(request, response) {
     else {
         url = encodeURI(`${DARKSKY_ENDPOINT}/${lat},${lon},${time}`);
     }
-    console.log(url);
+
     fetch(url).then((res) => {
         return res.json();
     })
@@ -56,7 +56,6 @@ app.post("/darksky", function(request, response) {
 
 app.get("/cityimage/:city", function(request, response) {
     const url = encodeURI(`${PIXABAY_ENDPOINT}&q=${request.params.city}`);
-    console.log(url);
     fetch(url).then((res) => {
         return res.json();
     })
