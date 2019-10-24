@@ -98,12 +98,16 @@ header {
             flex-wrap: nowrap;
             align-items: flex-end;
 
+            input {
+                margin-right: 5px;
+            }
+
             #cityContainer {
-                width: 50%;
+                width: 1fr;
             }
 
             #dateContainer {
-                width: 40%;
+                width: 50%;
             }
     
             button {
@@ -115,17 +119,23 @@ header {
     }
 
 
-    // #result {
-    //     max-width: 800px;
-    //     display: flex;
-    //     flex-direction: column;
+    #result {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: row;
 
-    //     &.hidden {
-    //         display: none;
-    //     }
-    // }
+        &.hidden {
+            display: none;
+        }
 
-    // #cityImage {
-    //     width: 50%;
-    // }
+        #resultBody {
+            margin: 0 10px;
+        }
+    }
+
+    #cityImage {
+        width: 50%;
+        order: 0;
+    }
 }
