@@ -29,16 +29,17 @@ document.getElementById("submitButton").addEventListener("click", function(event
     const travelLength = Math.floor((travelEndDate - travelStartDate)/(1000*60*60*24));
 
     // location
-    let location;
+    let destination;
 
     // get coordinate/weather from city
     getCoord(city).then((coordRecord) => {
         if (coordRecord.status === "ok") {
+            destination = coordRecord.name + ", " + coordRecord.countryName
+            document.getElementById("destination").innerHTML = destination;
+            document.getElementById("departure").innerHTML = startDate;
+            document.getElementById("return").innerHTML = endDate;
             document.getElementById("tripLength").innerHTML = travelLength;
             document.getElementById("countdown").innerHTML = daysAway;
-            document.getElementById("city").innerHTML = coordRecord.name;
-            document.getElementById("country").innerHTML = coordRecord.countryName;
-            location = coordRecord.name;
             return [coordRecord.lat, coordRecord.lng];
         } else {
             console.log("get coord failed");
@@ -53,13 +54,13 @@ document.getElementById("submitButton").addEventListener("click", function(event
         }
     }).then((weather) => {
         if (daysAway < 7) {
-            document.getElementById("weatherTitle").innerHTML = `Current weather in ${location}`;
+            document.getElementById("weatherTitle").innerHTML = `Current weather in ${destination}`;
         } else {
-            document.getElementById("weatherTitle").innerHTML = `Weather forcast in ${location}`;
+            document.getElementById("weatherTitle").innerHTML = `Weather forcast in ${destination}`;
         }
         document.getElementById("weatherSummary").innerHTML = weather.summary;
-        document.getElementById("lowTemp").innerHTML = weather.lowTemp;
-        document.getElementById("highTemp").innerHTML = weather.highTemp;
+        document.getElementById("lowTemp").innerHTML = Math.round(weather.lowTemp) + "&deg;";
+        document.getElementById("highTemp").innerHTML = Math.round(weather.highTemp) + "&deg;";
 
         // get city image
         return getImage(city);
