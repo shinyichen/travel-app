@@ -14,13 +14,14 @@
             }
         </script>
     </head>
-    <header>
-        <h1>Travel App</h1>
-    </header>
     <body>
+        <header>
+            <h1>Travel App</h1>
+        </header>
+
         <section id="inputSection">
             <h3>Enter your travel information</h3>
-            <form id="inputForm">
+            <div id="inputForm">
                 <div id="cityContainer">
                     <label for="cityInput">Destination</label>
                     <input type="text" name="cityInput" id="cityInput" required/>
@@ -37,17 +38,21 @@
                 </div>
                 
                 <button id="submitButton">Submit</button>
-            </form>
+            </div>
         </section>
 
         <section id="result" class="hidden">
-            <h2 id="destination"></h2>
-            <h4><span id="departure"></span> - <span id="return"></span></h4>
-            <div>Your <span id="tripLength"></span>-day trip is <span id="countdown"></span> days away</div>
-            <div><img id="cityImage"></img></div>
-            <h4 id="weatherTitle"></h4>
-            <div id="weatherSummary"></div>
-            <div>Temperature: <span id="highTemp"></span> | <span id="lowTemp"></span></div>
+            <div id="resultHead">
+                <h2 id="destination"></h2>
+                <h4><span id="departure"></span> - <span id="return"></span></h4>
+                <div>Your <span id="tripLength"></span>-day trip is <span id="countdown"></span> days away</div>
+            </div>
+            <img id="cityImage"></img>
+            <div id="resultBody">
+                <h4 id="weatherTitle"></h4>
+                <div id="weatherSummary"></div>
+                <div>Temperature: <span id="highTemp"></span> | <span id="lowTemp"></span></div>
+            </div>
         </section>
 
     </body>

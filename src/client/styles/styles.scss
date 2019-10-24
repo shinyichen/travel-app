@@ -77,13 +77,55 @@ header {
     border-radius: 5px;
     margin: 10px auto;
     padding: 5px 5px;
-    font-size: 10px;
+    font-size: 16px;
     border: 1px solid lightgray;
     box-shadow: darkgray 4px 4px 4px;
 }
 
-@media screen and (min-width: 600px) {
+@media (min-width: 600px) {
     body {
-        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
+
+    #inputSection {
+        width: 100%;
+        max-width: 800px;
+
+        #inputForm {
+            flex-direction: row;
+            flex-wrap: nowrap;
+            align-items: flex-end;
+
+            #cityContainer {
+                width: 50%;
+            }
+
+            #dateContainer {
+                width: 40%;
+            }
+    
+            button {
+                flex: flex-grow;
+                max-width: 10%;
+                margin-bottom: 5px;;
+            }
+        }
+    }
+
+
+    // #result {
+    //     max-width: 800px;
+    //     display: flex;
+    //     flex-direction: column;
+
+    //     &.hidden {
+    //         display: none;
+    //     }
+    // }
+
+    // #cityImage {
+    //     width: 50%;
+    // }
 }
