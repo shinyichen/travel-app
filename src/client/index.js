@@ -1,26 +1,47 @@
 import { getCoord, getWeather, getImage } from "./js/getCoordinate";
 import "./styles/styles.scss";
 
+// make start date input start at today
+let today = new Date(Date.now());
+today.setHours(0);
+today.setMinutes(0);
+today.setSeconds(0);
+today.setMilliseconds(0);
+const todayString = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
+document.getElementById("startDateInput").setAttribute("min", todayString);
+document.getElementById("endDateInput").setAttribute("min", todayString);
+
 document.getElementById("submitButton").addEventListener("click", function(event) {
     event.preventDefault();
 
-    // today's date
-    let today = new Date(Date.now());
-    today.setHours(0);
-    today.setMinutes(0);
-    today.setSeconds(0);
-    today.setMilliseconds(0);
+    // clear results
+    document.getElementById("errorSection").classList.add("hidden");
+    document.getElementById("result").classList.add("hidden");
 
     // get user inputs
     const city = document.getElementById("cityInput").value;
     const startDate = document.getElementById("startDateInput").value;
     const endDate = document.getElementById("endDateInput").value;
 
+    // validate inputs
+    if (city === "" || startDate === "" || endDate === "") {
+        document.getElementById("errorSection").classList.remove("hidden");
+        document.getElementById("errorMessage").innerHTML = "Destination and dates are required";
+        return;
+    } 
+
     // get travel date
     const startDateSplit = startDate.split("-");
     const endDateSplit = endDate.split("-");
     let travelStartDate = new Date(startDateSplit[0], startDateSplit[1]-1, startDateSplit[2], 0, 0, 0, 0);
     let travelEndDate = new Date(endDateSplit[0], endDateSplit[1]-1, endDateSplit[2], 0, 0, 0, 0);
+
+    // validate date
+    if (travelEndDate <= travelStartDate) {
+        document.getElementById("errorSection").classList.remove("hidden");
+        document.getElementById("errorMessage").innerHTML = "Travel end date must be after travel start date";
+        return;
+    }
 
     // count the difference in days
     const daysAway = Math.floor((travelStartDate - today)/(1000*60*60*24));
@@ -33,6 +54,7 @@ document.getElementById("submitButton").addEventListener("click", function(event
 
     // get coordinate/weather from city
     getCoord(city).then((coordRecord) => {
+        document.getElementById("errorSection").classList.add("hidden");
         if (coordRecord.status === "ok") {
             destination = coordRecord.name + ", " + coordRecord.countryName
             document.getElementById("destination").innerHTML = destination;
@@ -42,7 +64,9 @@ document.getElementById("submitButton").addEventListener("click", function(event
             document.getElementById("countdown").innerHTML = daysAway;
             return [coordRecord.lat, coordRecord.lng];
         } else {
-            console.log("get coord failed");
+            document.getElementById("errorSection").classList.remove("hidden");
+            document.getElementById("errorMessage").innerHTML = coordRecord.message;
+            return Promise.reject(coordRecord.message);
         }
     })
     .then((coord) => {
@@ -52,6 +76,8 @@ document.getElementById("submitButton").addEventListener("click", function(event
         } else {
             return getWeather(coord[0], coord[1], travelStartDate.getTime()/1000);
         }
+    }, (error)=> { // promise rejected due to error, do nothing
+        return Promise.reject(error);
     }).then((weather) => {
         if (daysAway < 7) {
             document.getElementById("weatherTitle").innerHTML = `Current weather in ${destination}`;
@@ -64,10 +90,14 @@ document.getElementById("submitButton").addEventListener("click", function(event
 
         // get city image
         return getImage(destination);
+    }, (error) => {
+        return Promise.reject(error);
     })
     .then((imageUrl) => {
         document.getElementById("cityImage").setAttribute("src", imageUrl);
         document.getElementById("result").classList.remove("hidden");
+    }, (error) => {
+        console.log(error);
     });
 
 
