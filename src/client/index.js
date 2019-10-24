@@ -63,7 +63,7 @@ document.getElementById("submitButton").addEventListener("click", function(event
         document.getElementById("highTemp").innerHTML = Math.round(weather.highTemp) + "&deg;";
 
         // get city image
-        return getImage(city);
+        return getImage(destination);
     })
     .then((imageUrl) => {
         document.getElementById("cityImage").setAttribute("src", imageUrl);
