@@ -10,6 +10,7 @@ function init() {
     const todayString = `${today.getFullYear()}-${today.getMonth()+1}-${today.getDate()}`;
     document.getElementById("startDateInput").setAttribute("min", todayString);
     document.getElementById("endDateInput").setAttribute("min", todayString);
+    return true;
 }
 
 function submitListener() {
@@ -52,14 +53,16 @@ function submitListener() {
     const travelLength = Math.floor((travelEndDate - travelStartDate)/(1000*60*60*24));
 
     // location
-    let destination;
+    let destinationCity;
+    let destinationCountry;
 
     // get coordinate/weather from city
     getCoord(city).then((coordRecord) => {
         document.getElementById("errorSection").classList.add("hidden");
         if (coordRecord.status === "ok") {
-            destination = coordRecord.name + ", " + coordRecord.countryName
-            document.getElementById("destination").innerHTML = destination;
+            destinationCity = coordRecord.name;
+            destinationCountry = coordRecord.countryName;
+            document.getElementById("destination").innerHTML = destinationCity + ", " + destinationCountry;
             document.getElementById("departure").innerHTML = startDate;
             document.getElementById("return").innerHTML = endDate;
             document.getElementById("tripLength").innerHTML = travelLength;
@@ -82,21 +85,23 @@ function submitListener() {
         return Promise.reject(error);
     }).then((weather) => {
         if (daysAway < 7) {
-            document.getElementById("weatherTitle").innerHTML = `Current weather in ${destination}`;
+            document.getElementById("weatherTitle").innerHTML = `Current weather in ${destinationCity}, ${destinationCountry}`;
         } else {
-            document.getElementById("weatherTitle").innerHTML = `Weather forcast in ${destination}`;
+            document.getElementById("weatherTitle").innerHTML = `Weather forcast in ${destinationCity}, ${destinationCountry}`;
         }
         document.getElementById("weatherSummary").innerHTML = weather.summary;
         document.getElementById("lowTemp").innerHTML = Math.round(weather.lowTemp) + "&deg;";
         document.getElementById("highTemp").innerHTML = Math.round(weather.highTemp) + "&deg;";
 
         // get city image
-        return getImage(destination);
+        return getImage(destinationCity, destinationCountry);
     }, (error) => {
         return Promise.reject(error);
     })
     .then((imageUrl) => {
-        document.getElementById("cityImage").setAttribute("src", imageUrl);
+        if (imageUrl !== null) {
+            document.getElementById("cityImage").setAttribute("src", imageUrl);
+        }
         document.getElementById("result").classList.remove("hidden");
     }, (error) => {
         console.log(error);
@@ -144,11 +149,23 @@ async function getWeather(lat, lon, time) {
     return weather;
 }
 
-async function getImage(city) {
-    const url = encodeURI(`http://localhost:8000/cityimage/${city}`);
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.imageUrl;
+async function getImage(city, country) {
+    let url = encodeURI(`http://localhost:8000/cityimage/${city}, ${country}`);
+    let response = await fetch(url);
+    let data = await response.json();
+    if (data.status == "ok") {
+        return data.imageUrl;
+    } else {
+        url = encodeURI(`http://localhost:8000/cityimage/${country}`);
+        response = await fetch(url);
+        data = await response.json();
+        if (data.status == "ok") {
+            return data.imageUrl;
+        } else {
+            return null;
+        }
+    }
+    
 }
 
 export {

@@ -59,9 +59,20 @@ app.get("/cityimage/:city", function(request, response) {
     fetch(url).then((res) => {
         return res.json();
     })
-    .then((res) => {
-        response.json({
-            imageUrl: res.hits[0].webformatURL
-        });
+    .then((data) => {
+        if (data.totalHits === 0) {
+            response.json({
+                status: "failed",
+                message: "No images found"
+            });
+        }
+        else {
+            response.json({
+                status: "ok",
+                imageUrl: data.hits[0].webformatURL
+            });
+        }
     });
 });
+
+module.exports = server;
