@@ -18,6 +18,14 @@ dotenv.config();
 const DARKSKY_ENDPOINT = `https://api.darksky.net/forecast/${process.env.DARKSKY_API_KEY}`;
 const PIXABAY_ENDPOINT = `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}`;
 
+/* store data */
+let trips = {};
+
+/* id generator */
+function generateId() {
+    return Math.random().toString(36);
+}
+
 /* start server */
 const server = app.listen(PORT, ()=>{
     console.log(`Running on localhost: ${PORT}`);
@@ -26,6 +34,28 @@ const server = app.listen(PORT, ()=>{
 /* index */
 app.get("/", function(request, response) {
     response.sendFile("dist/index.html");
+});
+
+/* add a trip */
+app.post("/add", function(request, response) {
+    const destination = request.body.destination;
+    const startDate = new Date(request.body.startDateMS);
+    const endDate = new Date(request.body.endDateMS);
+    const id = generateId();
+    trips[id] = {
+        destination: destination,
+        startDate: startDate,
+        endDate: endDate
+    }
+    response.status = 200;
+    response.json({
+        status: "ok"
+    });
+});
+
+/* get trips */
+app.get("/trips", function(request, response) {
+    response.json(trips);
 });
 
 /* get weather forcast from darksky API */

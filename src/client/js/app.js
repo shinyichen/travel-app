@@ -103,8 +103,9 @@ function submitListener() {
             document.getElementById("cityImage").setAttribute("src", imageUrl);
         }
         document.getElementById("result").classList.remove("hidden");
+        return save(`${destinationCity}, ${destinationCountry}`, travelStartDate, travelEndDate);
     }, (error) => {
-        console.log(error);
+        return Promise.reject(error);
     });
 }
 
@@ -166,6 +167,23 @@ async function getImage(city, country) {
         }
     }
     
+}
+
+async function save(destination, travelStartDate, travelEndDate) {
+    const response = await fetch("http://localhost:8000/add", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "Content-Type": "application-json"
+        },
+        body: JSON.stringify({
+            destination: destination,
+            startDateMS: travelStartDate.getTime(),
+            travelEndDate: travelEndDate.getTime()
+        })
+    })
+    const data = await response.json();
+    return "saved";
 }
 
 export {
